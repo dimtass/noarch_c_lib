@@ -35,7 +35,7 @@ struct tp_state {
             .exit = EXIT, \
         }
 
-struct tp_state_obj {
+struct obj_state_t {
 	void 				*data;
 	struct tp_state 	*state_list;
 	uint16_t			state_list_size;
@@ -44,7 +44,7 @@ struct tp_state_obj {
 };
 
 #define DECLARE_STATE_OBJ(NAME,DATA,LIST,LIST_SIZE,CURR,NEXT) \
-	struct tp_state_obj NAME = { \
+	struct obj_state_t NAME = { \
 		.data = DATA, \
 		.state_list = LIST, \
 		.state_list_size = LIST_SIZE, \
@@ -53,13 +53,13 @@ struct tp_state_obj {
 	}
 
 
-static inline void __attribute__((always_inline)) state_change(struct tp_state_obj * obj, state_t  next)
+static inline void __attribute__((always_inline)) state_change(struct obj_state_t * obj, state_t  next)
 {
     if (next < obj->state_list_size)
     	obj->state_next = &obj->state_list[next];
 }
 
-static inline void __attribute__((always_inline)) state_handler(struct tp_state_obj * obj)
+static inline void __attribute__((always_inline)) state_handler(struct obj_state_t * obj)
 {
     if (obj->state_curr != obj->state_next) {
         if (obj->state_curr->exit)

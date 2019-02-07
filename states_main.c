@@ -14,6 +14,7 @@
 #include "states.h"
 #include "trace.h"
 
+/* Set trace levels */
 uint32_t trace_levels = \
 		TRACE_LEVEL_DEFAULT |
 		0;
