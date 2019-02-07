@@ -11,6 +11,7 @@ projects as they are more lightweight.
 * `various_defs.h`: Various useful defines
 * `states.h`: A state machine library
 * `time_sched.h`: A timer/scheduler library
+* `mod_led.h`: A generic cross-platform module for LEDS
 
 ## Author
 Dimitris Tassopoulos <dimtass@gmail.com>
