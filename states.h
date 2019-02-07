@@ -53,13 +53,15 @@ struct obj_state_t {
 	}
 
 
-static inline void __attribute__((always_inline)) state_change(struct obj_state_t * obj, state_t  next)
+inline void __attribute__((always_inline))
+state_change(struct obj_state_t * obj, state_t  next)
 {
     if (next < obj->state_list_size)
     	obj->state_next = &obj->state_list[next];
 }
 
-static inline void __attribute__((always_inline)) state_handler(struct obj_state_t * obj)
+inline void __attribute__((always_inline))
+state_handler(struct obj_state_t * obj)
 {
     if (obj->state_curr != obj->state_next) {
         if (obj->state_curr->exit)
