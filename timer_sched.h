@@ -70,7 +70,8 @@ struct obj_timer_t {
 
 #define TIMER_EXISTS(TMR, ITTERATOR) ( (TMR->fp_timeout_cb == ITTERATOR->fp_timeout_cb) && (TMR->timeout_ticks == ITTERATOR->timeout_ticks) )
 
-static inline struct obj_timer_t * mod_timer_find_timer(struct obj_timer_t * tmr, struct list_head * timer_list)
+static inline struct obj_timer_t * __attribute__((always_inline))
+mod_timer_find_timer(struct obj_timer_t * tmr, struct list_head * timer_list)
 {
 	if (!list_empty(timer_list)) {
 		struct obj_timer_t * tmr_it = NULL;
@@ -84,7 +85,8 @@ static inline struct obj_timer_t * mod_timer_find_timer(struct obj_timer_t * tmr
 	return NULL;
 }
 
-static inline void mod_timer_add(void * object, uint16_t timeout, void * obj_callback, struct list_head * timer_list)
+static inline void __attribute__((always_inline))
+mod_timer_add(void * object, uint16_t timeout, void * obj_callback, struct list_head * timer_list)
 {
 	struct obj_timer_t timer = {
 		.parent = object,
@@ -103,7 +105,8 @@ static inline void mod_timer_add(void * object, uint16_t timeout, void * obj_cal
 	}
 }
 
-static inline void mod_timer_del(struct obj_timer_t * timer, struct list_head * timer_list)
+static inline void __attribute__((always_inline))
+mod_timer_del(struct obj_timer_t * timer, struct list_head * timer_list)
 {
 	struct obj_timer_t * found_timer = mod_timer_find_timer(timer, timer_list);
 	if (found_timer) {
@@ -113,7 +116,8 @@ static inline void mod_timer_del(struct obj_timer_t * timer, struct list_head * 
 	}
 }
 
-static inline void mod_timer_polling(struct list_head * timer_list)
+static inline void __attribute__((always_inline))
+mod_timer_polling(struct list_head * timer_list)
 {
 	if (!list_empty(timer_list)) {
 		struct obj_timer_t * tmr_it = NULL;
