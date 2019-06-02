@@ -47,8 +47,13 @@
 #ifndef __TIMER_SCHED_H_
 #define __TIMER_SCHED_H_
 
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <string.h>
+#include <stdlib.h>
 #include "LICENSE.h"
 #include "list.h"
 
@@ -99,7 +104,7 @@ mod_timer_add(void * object, uint16_t timeout, void * obj_callback, struct list_
 	if (!mod_timer_find_timer(&timer, timer_list)) {
 		struct obj_timer_t * new_timer = (struct obj_timer_t *) malloc(sizeof(struct obj_timer_t));
 		memcpy(new_timer, &timer, sizeof(struct obj_timer_t));
-		TRACE(("Timer add: %d/%d\n", new_timer->timeout_ticks, new_timer->counter));
+		// TRACE(("Timer add: %d/%d\n", new_timer->timeout_ticks, new_timer->counter));
 		INIT_LIST_HEAD(&new_timer->list);
 		list_add(&new_timer->list, timer_list);
 	}
@@ -129,5 +134,9 @@ mod_timer_polling(struct list_head * timer_list)
 		}
 	}
 }
+
+#ifdef	__cplusplus
+}
+#endif
 
 #endif /* __TIMER_SCHED_H_ */

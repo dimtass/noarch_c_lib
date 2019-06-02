@@ -1,5 +1,5 @@
 /**
- * trace.h
+ * debug_trace.h
  *
  * LICENSE: MIT
  *
@@ -13,8 +13,12 @@
  * Dimitris Tassopoulos <dimtass@gmail.com>
  */
 
-#ifndef __TRACE_H_
-#define __TRACE_H_
+#ifndef __DEBUG_TRACE_H_
+#define __DEBUG_TRACE_H_
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
 #include <stdint.h>
 #include "LICENSE.h"
@@ -37,4 +41,18 @@
 
 extern uint32_t trace_levels;
 
-#endif //__TRACE_H_
+static inline void trace_levels_set(uint32_t level, uint8_t enable)
+{
+	if (enable) {
+		trace_levels |= level;
+	}
+	else {
+		trace_levels &= ~level;
+	}
+}
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif //__DEBUG_TRACE_H_

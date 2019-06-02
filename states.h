@@ -16,6 +16,10 @@
 #ifndef __STATES_H_
 #define __STATES_H_
 
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include "LICENSE.h"
 
@@ -78,5 +82,8 @@ state_handler(struct obj_state_t * obj)
     	obj->state_curr->run(obj->data);
 }
 
+#ifdef	__cplusplus
+}
+#endif
 
 #endif // __STATES_H_

@@ -12,7 +12,7 @@
 #include "LICENSE.h"
 #include "various_defs.h"
 #include "states.h"
-#include "trace.h"
+#include "debug_trace.h"
 
 /* Set trace levels */
 uint32_t trace_levels = \

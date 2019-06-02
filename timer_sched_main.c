@@ -10,7 +10,7 @@
 
 #include "LICENSE.h"
 #include "various_defs.h"
-#include "trace.h"
+#include "debug_trace.h"
 #include "timer_sched.h"
 
 /* Set trace levels */
