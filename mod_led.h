@@ -1,6 +1,8 @@
 /*
  * mod_led.h
- *
+ * 
+ * Usage:
+ * 
  */
 
 #ifndef __MOD_LED_H_
@@ -45,9 +47,9 @@ struct dev_led {
 	uint16_t			id;
 	uint16_t			pattern;
 	void 				*bsp_data;
-	int (*led_init)(void*);
-	int (*led_on)(void*);
-	int (*led_off)(void*);
+	void (*led_init)(void*);
+	void (*led_on)(void*);
+	void (*led_off)(void*);
 	struct list_head 	list;
 };
 
