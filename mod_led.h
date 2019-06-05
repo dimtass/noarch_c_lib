@@ -2,7 +2,14 @@
  * mod_led.h
  * 
  * Usage:
- * 
+ * // Declare LED module and initialize it
+ * DECLARE_MODULE_LED(led_module, 8, 250);
+ * mod_led_init(&led_module);
+ * mod_timer_add((void*) &led_module, led_module.tick_ms, (void*) &mod_led_update, &obj_timer_list);
+ * // Declare LED
+ * DECLARE_DEV_LED(def_led, &led_module, 1, NULL, &led_init, &led_on, &led_off);
+ * dev_led_add(&def_led);
+ * dev_led_set_pattern(&def_led, 0b11001100);
  */
 
 #ifndef __MOD_LED_H_
@@ -12,7 +19,8 @@
 #include "LICENSE.h"
 #include "list.h"
 
-typedef uint32_t led_pattern_t;
+/* This defines the size/bit-length of the pattern */
+typedef uint16_t led_pattern_t;
 
 #define DECLARE_MODULE_LED(NAME,SIZE,TICK_MS) \
 	struct mod_led NAME = { \
@@ -23,7 +31,7 @@ typedef uint32_t led_pattern_t;
 
 
 struct mod_led {
-	uint32_t	pattern_index;
+	volatile uint8_t pattern_index;
 	uint8_t		pattern_size;
 	uint16_t	tick_ms;
 	struct list_head led_list;
@@ -45,7 +53,7 @@ struct mod_led {
 struct dev_led {
 	struct mod_led * 	owner;
 	uint16_t			id;
-	uint16_t			pattern;
+	led_pattern_t		pattern;
 	void 				*bsp_data;
 	void (*led_init)(void*);
 	void (*led_on)(void*);
@@ -94,8 +102,9 @@ dev_led_set_pattern(struct dev_led * led, led_pattern_t pattern)
 {
 	struct mod_led * mod = led->owner;
 	struct dev_led * found_led = dev_led_find(mod, led);
-	if (found_led)
-		found_led->pattern = (uint32_t) pattern;
+	if (found_led) {
+		found_led->pattern = pattern;
+	}
 }
 
 
