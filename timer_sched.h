@@ -57,6 +57,8 @@ extern "C" {
 #include "LICENSE.h"
 #include "list.h"
 
+typedef void (*fp_timeout_cb)(void *);
+
 /**
  * @brief: Basic timer object.
  * @parent void* This is a pointer to the object that will use the timer
@@ -69,11 +71,11 @@ struct obj_timer_t {
 	void 				*parent;
 	uint16_t 			timeout_ticks;
 	volatile uint16_t 	counter;
-	void (*fp_timeout_cb)(void *);
+	fp_timeout_cb		cbk;
 	struct list_head 	list;
 };
 
-#define TIMER_EXISTS(TMR, ITTERATOR) ( (TMR->fp_timeout_cb == ITTERATOR->fp_timeout_cb) && (TMR->timeout_ticks == ITTERATOR->timeout_ticks) )
+#define TIMER_EXISTS(TMR, ITTERATOR) ( (TMR->cbk == ITTERATOR->cbk) && (TMR->timeout_ticks == ITTERATOR->timeout_ticks) )
 
 static inline struct obj_timer_t * __attribute__((always_inline))
 mod_timer_find_timer(struct obj_timer_t * tmr, struct list_head * timer_list)
@@ -91,13 +93,13 @@ mod_timer_find_timer(struct obj_timer_t * tmr, struct list_head * timer_list)
 }
 
 static inline void __attribute__((always_inline))
-mod_timer_add(void * object, uint16_t timeout, void * obj_callback, struct list_head * timer_list)
+mod_timer_add(void * object, uint16_t timeout, fp_timeout_cb obj_callback, struct list_head * timer_list)
 {
 	struct obj_timer_t timer = {
 		.parent = object,
 		.timeout_ticks = timeout,
-		.fp_timeout_cb = obj_callback,
-		.counter = 0
+		.counter = 0,
+		.cbk = obj_callback
 	};
 	/* Check if already exists */
 	if (!timer_list) return;
@@ -129,7 +131,7 @@ mod_timer_polling(struct list_head * timer_list)
 		list_for_each_entry(tmr_it, timer_list, list) {
 			if ((++tmr_it->counter) >= tmr_it->timeout_ticks) {
 				tmr_it->counter = 0;
-				tmr_it->fp_timeout_cb(tmr_it->parent);
+				tmr_it->cbk(tmr_it->parent);
 			}
 		}
 	}
